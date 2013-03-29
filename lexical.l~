@@ -6,38 +6,9 @@
 	SEMI,COMMA,ASSIGNOP,
 	PLUS,MINUS,STAR,DIV,AND,OR,DOT,NOT,
 	LP,RP,LB,RB,LC,RC */
-	#define IF	1
-	#define ELSE	2
-	#define STRUCT	3
-	#define WHILE	4
-	#define RETURN	5
-	#define LT	6
-	#define LE	7
-	#define EQ	8
-	#define NE	9
-	#define GT	10
-	#define GE	11
-	#define RELOP 	12
-	#define ID	13
-	#define FLOAT	14
-	#define TYPE	15
-	#define SEMI	16
-	#define COMMA	17
-	#define ASSIGNOP 18
-	#define PLUS	19
-	#define MINUS	20
-	#define STAR 	21
-	#define DIV	22
-	#define AND	23
-	#define OR 	24
-	#define DOT	25
-	#define NOT	26
-	#define LP	27
-	#define RP	28
-	#define LB	29
-	#define RB	30
-	#define LC	31
-	#define RC	32
+	
+	#include "syntax.tab.h"	
+
 %}
 
 /*regular definitions */
@@ -45,7 +16,7 @@ delim		[ \t\n]
 ws		{delim}+
 letter		[A-Za-z]
 digit		[0-9]
-int		[1-9][0-9]*|0[1-7][0-7]*|0x[1-9A-Fa-f][0-9A-Fa-f]*
+int		0|[1-9][0-9]*|0[1-7][0-7]*|0x[1-9A-Fa-f][0-9A-Fa-f]*
 float		[0-9]+.[0-9]+
 id		[A-Za-z_][A-Za-z0-9_]*
 type		{int}|{float}
