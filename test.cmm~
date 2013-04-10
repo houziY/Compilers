@@ -1,1 +1,6 @@
-++233+++'struct' dwefwe
+int main()
+{
+int i = 1;
+int j = ~i;
+}
+

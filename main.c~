@@ -1,13 +1,21 @@
-#include<stdio.h>
+#include <stdio.h>
+//#include "syntree.h"
+extern struct TreeNode* root ;
 
-int main(int argc, char** argv){
-	if (argc <= 1) return 1;
-	FILE* f = fopen(argv[1], "r");
-	if (!f){
-		perror(argv[1]);
-		return 1;
-	}
-	yyrestart(f);
-	yyparse();
-	return 0;
-}
+int main(int argc, char** argv) 
+{ 
+  	if (argc < 1) return 1; 
+	FILE* f = fopen(argv[1], "r"); 
+  	if (!f) 
+  	{ 
+    		perror(argv[1]); 
+    		return 1; 
+  	}
+	
+  	yyrestart(f); 
+  	yyparse();
+	printf("=======================================================================\n");
+	printTree(root,1);
+	printf("=======================================================================\n");
+  	return 0; 
+} 

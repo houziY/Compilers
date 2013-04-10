@@ -41,35 +41,29 @@
      FLOAT = 259,
      TYPE = 260,
      ID = 261,
-     LT = 262,
-     LE = 263,
-     EQ = 264,
-     NE = 265,
-     GT = 266,
-     GE = 267,
-     RELOP = 268,
-     STRUCT = 269,
-     RETURN = 270,
-     IF = 271,
-     ELSE = 272,
-     WHILE = 273,
-     SEMI = 274,
-     COMMA = 275,
-     ASSIGNOP = 276,
-     PLUS = 277,
-     MINUS = 278,
-     STAR = 279,
-     DIV = 280,
-     AND = 281,
-     OR = 282,
-     DOT = 283,
-     NOT = 284,
-     LP = 285,
-     RP = 286,
-     LB = 287,
-     RB = 288,
-     LC = 289,
-     RC = 290
+     SEMI = 262,
+     COMMA = 263,
+     RC = 264,
+     LC = 265,
+     RB = 266,
+     LB = 267,
+     RP = 268,
+     LP = 269,
+     DOT = 270,
+     OR = 271,
+     AND = 272,
+     DIV = 273,
+     STAR = 274,
+     MINUS = 275,
+     PLUS = 276,
+     RELOP = 277,
+     NOT = 278,
+     ASSIGNOP = 279,
+     WHILE = 280,
+     ELSE = 281,
+     IF = 282,
+     RETURN = 283,
+     STRUCT = 284
    };
 #endif
 
@@ -80,16 +74,12 @@ typedef union YYSTYPE
 {
 
 /* Line 2068 of yacc.c  */
-#line 7 "syntax.y"
-
-	int type_int;
-	float type_float;
-	double type_double;
-
+#line 17 "syntax.y"
+struct Node *node;
 
 
 /* Line 2068 of yacc.c  */
-#line 93 "syntax.tab.h"
+#line 83 "syntax.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
