@@ -1,6 +1,6 @@
 int main()
 {
-int i = 1;
-int j = ~i;
+int i = 09 ;
+int j = 0x3G ;
 }
 

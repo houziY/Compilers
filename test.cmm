@@ -1,6 +1,6 @@
-int inc()
+int main()
 {
-int i;
-i = i + 1;
+int i = 09;
+int j = 0x3G;
 }
 

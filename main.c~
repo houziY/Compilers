@@ -4,7 +4,10 @@ extern struct TreeNode* root ;
 
 int main(int argc, char** argv) 
 { 
-  	if (argc < 1) return 1; 
+  	if (argc < 1){
+		printf("Usage:./parser + source file name!!\n");
+		return 1;
+	}
 	FILE* f = fopen(argv[1], "r"); 
   	if (!f) 
   	{ 
@@ -15,7 +18,7 @@ int main(int argc, char** argv)
   	yyrestart(f); 
   	yyparse();
 	printf("=======================================================================\n");
-	printTree(root,1);
+	printTree(root,0);
 	printf("=======================================================================\n");
   	return 0; 
 } 

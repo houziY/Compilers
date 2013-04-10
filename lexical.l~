@@ -16,12 +16,6 @@ yylineno = 1;
 	};
 
 	void setNode(char *type,char *text);
-
-	/*int yycolumn = 1;
-	#define YY_USER_ACTION yylloc.first_line = yylloc.last_line = yylineno; \
-		yylloc.first_column = yycolumn; yylloc.last_column = yycolumn + yyleng - 1; yycolumn += yyleng;*/
-	
-
 %}
 
 /*regular definitions */
@@ -34,7 +28,7 @@ id		({letter}|_)({letter}|{digit}|_)*
 int		[0]|[1-9][0-9]*
 int8		[0][1-7][0-7]*
 int16		[0][xX][1-9A-Fa-f][0-9A-Fa-f]*
-float		[-+]?([0-9]*\.[0-9]+|[0-9]+\.)
+float		[-+]?(([0-9]*\.[0-9]+)|([0-9]+\.[0-9]*))
 relop		>|<|>=|<=|==|!=
 
 %%

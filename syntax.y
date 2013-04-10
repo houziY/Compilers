@@ -17,8 +17,9 @@
 %union{struct Node *node;}
 /*declared tokens*/
 %token <node>INT FLOAT TYPE ID SEMI COMMA
-%left  <node>RELOP PLUS MINUS STAR DIV AND OR DOT LP RP LB RB LC RC
 %right <node>ASSIGNOP NOT
+%left  <node>PLUS MINUS STAR DIV RELOP AND OR 
+%left  <node>DOT LP RP LB RB LC RC
 %nonassoc <node>STRUCT RETURN IF ELSE WHILE
 /*declared non-terminals*/
 %type <node>Program ExtDefList ExtDef ExtDecList
@@ -39,6 +40,7 @@ ExtDefList	:	ExtDef ExtDefList		{$$=addToTree("ExtDefList",2,$1,$2);}
 ExtDef		:	Specifier ExtDecList SEMI	{$$=addToTree("ExtDef",3,$1,$2,$3);}
 		|	Specifier SEMI			{$$=addToTree("ExtDef",2,$1,$2);}
 		|	Specifier FunDec CompSt		{$$=addToTree("ExtDef",3,$1,$2,$3);}
+		|	error SEMI			{}
 		;
 ExtDecList	:	VarDec				{$$=addToTree("ExtDecList",1,$1);}
 		|	VarDec COMMA ExtDecList		{$$=addToTree("ExtDecList",3,$1,$2,$3);}
@@ -59,6 +61,7 @@ VarDec		:	ID				{$$=addToTree("VarDec",1,$1);}
 		;
 FunDec		:	ID LP VarList RP		{$$=addToTree("FunDec",4,$1,$2,$3,$4);}
 		|	ID LP RP			{$$=addToTree("FunDec",3,$1,$2,$3);}
+		|	error RP			{}
 		;
 VarList		:	ParamDec COMMA VarList		{$$=addToTree("VarList",3,$1,$2,$3);}
 		|	ParamDec			{$$=addToTree("VarList",1,$1);}
@@ -87,6 +90,7 @@ Def		:	Specifier DecList SEMI		{$$=addToTree("Def",3,$1,$2,$3);}
 		;
 DecList		:	Dec				{$$=addToTree("DecList",1,$1);}
 		|	Dec COMMA DecList		{$$=addToTree("DecList",3,$1,$2,$3);}		
+		|	error SEMI			{}
 		;
 Dec		:	VarDec				{$$=addToTree("Dec",1,$1);}
 		|	VarDec ASSIGNOP	Exp		{$$=addToTree("Dec",3,$1,$2,$3);}
@@ -112,6 +116,7 @@ Exp		:	Exp ASSIGNOP Exp		{$$=addToTree("Exp",3,$1,$2,$3);}
 		;
 Args		:	Exp COMMA Args			{$$=addToTree("Args",3,$1,$2,$3);}
 		|	Exp				{$$=addToTree("Args",1,$1);}
+		|	error RP			{}
 		;
 
 %%
@@ -147,7 +152,7 @@ void printTree(struct Node *p,int depth){
 	if(p == NULL) return;
 	int i;
 	for(i = 0 ; i < depth ; i++)
-		printf("----");
+		printf("---");
 	if(!p->isToken){
 		printf("%s (%d)\n", p->type, p->line);
 		printTree(p->firstChild , depth+1);
