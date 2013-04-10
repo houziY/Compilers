@@ -10,6 +10,8 @@
 
 	void printTree(struct Node *p,int depth);
 	int myatoi(char* ch);
+
+	int isError;
 	
 %}
 
@@ -40,7 +42,7 @@ ExtDefList	:	ExtDef ExtDefList		{$$=addToTree("ExtDefList",2,$1,$2);}
 ExtDef		:	Specifier ExtDecList SEMI	{$$=addToTree("ExtDef",3,$1,$2,$3);}
 		|	Specifier SEMI			{$$=addToTree("ExtDef",2,$1,$2);}
 		|	Specifier FunDec CompSt		{$$=addToTree("ExtDef",3,$1,$2,$3);}
-		|	error SEMI			{}
+		|	error SEMI			{isError = 1;}
 		;
 ExtDecList	:	VarDec				{$$=addToTree("ExtDecList",1,$1);}
 		|	VarDec COMMA ExtDecList		{$$=addToTree("ExtDecList",3,$1,$2,$3);}
@@ -61,16 +63,17 @@ VarDec		:	ID				{$$=addToTree("VarDec",1,$1);}
 		;
 FunDec		:	ID LP VarList RP		{$$=addToTree("FunDec",4,$1,$2,$3,$4);}
 		|	ID LP RP			{$$=addToTree("FunDec",3,$1,$2,$3);}
-		|	error RP			{}
+		|	error RP			{isError = 1;}
 		;
 VarList		:	ParamDec COMMA VarList		{$$=addToTree("VarList",3,$1,$2,$3);}
 		|	ParamDec			{$$=addToTree("VarList",1,$1);}
 		;
 ParamDec	:	Specifier VarDec		{$$=addToTree("ParamDec",2,$1,$2);}
-		|	error SEMI			{}
+		|	error COMMA			{isError = 1;} 
+		|	error RB			{isError = 1;} 
 		;
 CompSt		:	LC DefList StmtList RC		{$$=addToTree("CompSt",4,$1,$2,$3,$4);}
-
+		|	error RC			{isError = 1;}
 		;
 StmtList	:	Stmt StmtList			{$$=addToTree("StmtList",2,$1,$2);}
 		|	/*empty*/			{$$=NULL;}
@@ -80,17 +83,18 @@ Stmt		:	Exp SEMI			{$$=addToTree("Stmt",2,$1,$2);}
 		|	RETURN Exp SEMI			{$$=addToTree("Stmt",3,$1,$2,$3);}
 		|	IF LP Exp RP Stmt ELSE Stmt	{$$=addToTree("Stmt",7,$1,$2,$3,$4,$5,$6,$7);}
 		|	WHILE LP Exp RP Stmt		{$$=addToTree("Stmt",5,$1,$2,$3,$4,$5);}
-		|	error SEMI			{}
+		|	error SEMI			{isError = 1;}
 		;
 
 DefList		:	Def DefList			{$$=addToTree("DefList",2,$1,$2);}
 		|	/*empty*/			{$$=NULL;}
 		;
 Def		:	Specifier DecList SEMI		{$$=addToTree("Def",3,$1,$2,$3);}
+		|	error SEMI			{isError = 1;}
 		;
 DecList		:	Dec				{$$=addToTree("DecList",1,$1);}
 		|	Dec COMMA DecList		{$$=addToTree("DecList",3,$1,$2,$3);}		
-		|	error SEMI			{}
+
 		;
 Dec		:	VarDec				{$$=addToTree("Dec",1,$1);}
 		|	VarDec ASSIGNOP	Exp		{$$=addToTree("Dec",3,$1,$2,$3);}
@@ -116,7 +120,6 @@ Exp		:	Exp ASSIGNOP Exp		{$$=addToTree("Exp",3,$1,$2,$3);}
 		;
 Args		:	Exp COMMA Args			{$$=addToTree("Args",3,$1,$2,$3);}
 		|	Exp				{$$=addToTree("Args",1,$1);}
-		|	error RP			{}
 		;
 
 %%
@@ -152,7 +155,7 @@ void printTree(struct Node *p,int depth){
 	if(p == NULL) return;
 	int i;
 	for(i = 0 ; i < depth ; i++)
-		printf("---");
+		printf("  ");
 	if(!p->isToken){
 		printf("%s (%d)\n", p->type, p->line);
 		printTree(p->firstChild , depth+1);
